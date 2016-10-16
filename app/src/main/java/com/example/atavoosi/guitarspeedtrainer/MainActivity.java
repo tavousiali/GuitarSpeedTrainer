@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity
     private Runnable myTaskInSecond;
 
 
-
     //Preferences
     private static String PrefFromBpm = "PrefFromBpm";
     private static String PrefToBpm = "PrefToBpm";
@@ -74,14 +73,12 @@ public class MainActivity extends AppCompatActivity
                 try {
                     sleep(sleepTime);
 
-//                                bpm = (TextView) findViewById(R.id.bpm);
-//                                bpm.setText(Integer.toString(sleepTime));
-
                     j++;
 
-                    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
-                    Date dateobj = new Date();
-                    Log.i("Beep", df.format(dateobj) + "_____" + sleepTime + "_____" + j);
+                    //Log
+//                    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
+//                    Date dateobj = new Date();
+//                    Log.i("Beep", df.format(dateobj) + "_____" + sleepTime + "_____" + j);
 
                     mySound.play(musicId, 1, 1, 1, 0, 1);
 //
@@ -92,8 +89,6 @@ public class MainActivity extends AppCompatActivity
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                } finally {
-
                 }
             }
 
@@ -116,15 +111,6 @@ public class MainActivity extends AppCompatActivity
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    private int ConvertMsToBpm(int ms) {
-        int bpm = 60000 / ms;
-        return bpm;
-    }
-
-    private int ConvertBpmToMs(int bpm) {
-        int ms = 60000 / bpm;
-        return ms;
-    }
 
     private DrawerLayout drawer;
 
@@ -135,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         changeTime = PreferenceUtil.readPreferences(MainActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue);
         fromBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
         toBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefToBpm, PrefToBpmDefaultValue);
-        sleepTime = ConvertBpmToMs(fromBpm);
+        sleepTime = ConvertUtil.ConvertBpmToMs(fromBpm);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -150,7 +136,7 @@ public class MainActivity extends AppCompatActivity
         start = (Button) findViewById(R.id.start);
         stop = (Button) findViewById(R.id.stop);
         bpm = (TextView) findViewById(R.id.bpm);
-        bpm.setText(String.valueOf(ConvertMsToBpm(sleepTime)));
+        bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
 
         mySound = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
         musicId = mySound.load(this, R.raw.beep, 1);
@@ -162,15 +148,17 @@ public class MainActivity extends AppCompatActivity
         myTask = new Runnable() {
             @Override
             public void run() {
-                DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
-                Date date = new Date();
-                Log.i("Beep", df.format(date) + "_____" + sleepTime);
+                //Log
+//                DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
+//                Date date = new Date();
+//                Log.i("Beep", df.format(date) + "_____" + sleepTime);
+
                 //Play sound
                 mySound.play(musicId, 1, 1, 1, 0, 1);
 
                 bpm.post(new Runnable() {
                     public void run() {
-                        bpm.setText(String.valueOf(ConvertMsToBpm(sleepTime)));
+                        bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
                     }
                 });
 
@@ -199,7 +187,7 @@ public class MainActivity extends AppCompatActivity
 
                 bpm.post(new Runnable() {
                     public void run() {
-                        bpm.setText(String.valueOf(ConvertMsToBpm(sleepTime)));
+                        bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
                     }
                 });
 
@@ -207,17 +195,21 @@ public class MainActivity extends AppCompatActivity
                 Calendar cal = Calendar.getInstance();
                 Date currentDate = cal.getTime();
 
-                DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
-                Log.i("Beep", df.format(currentDate) + "_____" + df.format(baseDate) + "______" + sleepTime);
+                //Log
+//                DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
+//                Log.i("Beep", df.format(currentDate) + "_____" + df.format(baseDate) + "______" + sleepTime);
 
                 long baseDateTime = baseDate.getTime();
                 long currentDateTime = currentDate.getTime();
                 if (baseDateTime < currentDateTime) {
-                    sleepTime = ConvertMsToBpm(ConvertBpmToMs(sleepTime) + 1);
+                    sleepTime = ConvertUtil.ConvertMsToBpm(ConvertUtil.ConvertBpmToMs(sleepTime) + 1);
 
                     baseDate.setTime(baseDate.getTime() + changeTime);
                 }
                 try {
+                    if (sleepTime < ConvertUtil.ConvertBpmToMs(toBpm))
+                        stop();
+
                     thread.sleep(sleepTime);
                     changeReadInterval(sleepTime);
                 } catch (InterruptedException e) {
@@ -235,7 +227,7 @@ public class MainActivity extends AppCompatActivity
                 baseDate = cal.getTime();
                 baseDate.setTime(baseDate.getTime() + changeTime);
 
-                changeReadInterval(ConvertBpmToMs(fromBpm));
+                changeReadInterval(ConvertUtil.ConvertBpmToMs(fromBpm));
 
             }
         });
@@ -243,16 +235,20 @@ public class MainActivity extends AppCompatActivity
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stop.setVisibility(View.GONE);
-                start.setVisibility(View.VISIBLE);
-                futureTask.cancel(true);
-
-                // اگر بخواهیم ریست کنیم
-                sleepTime = 2000;
-                bpm.setText(String.valueOf(ConvertMsToBpm(sleepTime)));
-                // اگر بخواهیم ادامه بدهیم، هیچ چیزی لازم نیست بنویسیم
+                stop();
             }
         });
+    }
+
+    private void stop() {
+        stop.setVisibility(View.GONE);
+        start.setVisibility(View.VISIBLE);
+        futureTask.cancel(true);
+
+        // اگر بخواهیم ریست کنیم
+        sleepTime = ConvertUtil.ConvertBpmToMs(fromBpm);
+        bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
+        // اگر بخواهیم ادامه بدهیم، هیچ چیزی لازم نیست بنویسیم
     }
 
     @Override
