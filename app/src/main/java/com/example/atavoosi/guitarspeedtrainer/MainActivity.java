@@ -118,13 +118,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         changeTime = PreferenceUtil.readPreferences(MainActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue);
         fromBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
         toBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefToBpm, PrefToBpmDefaultValue);
         sleepTime = ConvertUtil.ConvertBpmToMs(fromBpm);
 
-        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

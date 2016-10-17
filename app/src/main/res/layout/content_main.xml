@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="توقف"
             android:textColor="#fff"
-            android:textSize="60dp"
+            android:textSize="60sp"
             android:visibility="gone" />
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:textColor="#fff"
-            android:textSize="40dp" />
+            android:textSize="40sp" />
     </LinearLayout>
 
 </RelativeLayout>

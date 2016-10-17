@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/mainPage"
+            android:icon="@drawable/ic_menu"
+            android:title="صفحه نخست" />
+        <!--<item-->
+            <!--android:id="@+id/setting"-->
+            <!--android:icon="@drawable/ic_menu_settings"-->
+            <!--android:title="تنظیمات" />-->
+    </group>
+
+    <!--<item android:title="بیشتر">-->
+        <!--<menu>-->
+
+            <!--&lt;!&ndash;<item&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/nav_share"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:icon="@drawable/ic_menu_share"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:title="اشتراک گذاری" />&ndash;&gt;-->
+            <!--&lt;!&ndash;<item&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/nav_send"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:icon="@drawable/ic_menu_send"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:title="ارسال" />&ndash;&gt;-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>
