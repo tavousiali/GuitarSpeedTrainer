@@ -154,10 +154,15 @@ public class SettingActivity extends AppCompatActivity
                 int fromBpm = Integer.parseInt(String.valueOf(sbFromBpm.getProgress())) + 30;
                 int toBpm = Integer.parseInt(String.valueOf(sbToBpm.getProgress())) + 30;
                 int changeTime = Integer.parseInt(String.valueOf(sbChangeTime.getProgress())) + 1;
-                PreferenceUtil.savePreferences(SettingActivity.this, PrefFromBpm, fromBpm);
-                PreferenceUtil.savePreferences(SettingActivity.this, PrefToBpm, toBpm);
-                PreferenceUtil.savePreferences(SettingActivity.this, PrefChangeTime, changeTime);
-                goToMainActivity();
+
+                if (fromBpm < toBpm) {
+                    PreferenceUtil.savePreferences(SettingActivity.this, PrefFromBpm, fromBpm);
+                    PreferenceUtil.savePreferences(SettingActivity.this, PrefToBpm, toBpm);
+                    PreferenceUtil.savePreferences(SettingActivity.this, PrefChangeTime, changeTime);
+                    goToMainActivity();
+                } else {
+                    Toast.makeText(SettingActivity.this, "'از BPM' باید کوچکتر از 'تا BPM' باشد.", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

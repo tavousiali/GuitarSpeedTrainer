@@ -21,4 +21,8 @@
     <string name="TvToBpm">300</string>
     <string name="Save">ذخیزه</string>
     <string name="AppbarTitle">سریع نوازی گیتار</string>
+    <string name="SpeedSetting">تنظیمات سرعت</string>
+    <string name="FromBpm"> BPM از</string>
+    <string name="ToBpm"> BPM تا</string>
+    <string name="ChangeTime">طول هر BPM</string>
 </resources>
