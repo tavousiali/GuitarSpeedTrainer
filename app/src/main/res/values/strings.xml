@@ -25,4 +25,5 @@
     <string name="FromBpm"> BPM از</string>
     <string name="ToBpm"> BPM تا</string>
     <string name="ChangeTime">طول هر BPM</string>
+    <string name="BeepSound">تنظیمات صدا</string>
 </resources>
