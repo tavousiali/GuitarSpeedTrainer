@@ -21,9 +21,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingRight="8dp"
-                android:text="گیتار"
+                android:text="@string/AppbarTitle"
                 android:textColor="#ffffff"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
     <include layout="@layout/content_setting" />

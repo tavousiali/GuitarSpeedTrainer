@@ -20,4 +20,5 @@
     <string name="TvFromBpm">30</string>
     <string name="TvToBpm">300</string>
     <string name="Save">ذخیزه</string>
+    <string name="AppbarTitle">سریع نوازی گیتار</string>
 </resources>
