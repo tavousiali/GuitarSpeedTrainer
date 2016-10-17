@@ -12,52 +12,64 @@
     tools:context="com.example.atavoosi.guitarspeedtrainer.SettingActivity"
     tools:showIn="@layout/activity_setting">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/radioButtonGroup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
 
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+        <RadioGroup
             android:id="@+id/bpmType"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/StartStopBpmCount"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:background="@drawable/rbtn_selector"
                 android:button="@null"
-                android:drawableRight="@drawable/abc_btn_radio_material"
-                android:text="@string/StartStopBpmCount" />
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/StartStopBpmCount"
+                android:textColor="@drawable/rbtn_textcolor_selector" />
 
             <RadioButton
                 android:id="@+id/StartStopChangeTime"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:background="@drawable/rbtn_selector"
                 android:button="@null"
-                android:drawableRight="@drawable/abc_btn_radio_material"
-                android:text="@string/StartStopChangeTime" />
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/StartStopChangeTime"
+                android:textColor="@drawable/rbtn_textcolor_selector" />
 
             <RadioButton
                 android:id="@+id/StartStopTotalTime"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:background="@drawable/rbtn_selector"
                 android:button="@null"
-                android:drawableRight="@drawable/abc_btn_radio_material"
-                android:text="@string/StartStopTotalTime" />
-
-
+                android:checked="true"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/StartStopTotalTime"
+                android:textColor="@drawable/rbtn_textcolor_selector" />
         </RadioGroup>
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/fromBpm"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/radioButtonGroup"
@@ -75,7 +87,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="3" />
+            android:layout_weight="3"
+            android:progressDrawable="@drawable/apptheme_scrubber_progress_horizontal_holo_light"
+            android:thumb="@drawable/apptheme_scrubber_control_selector_holo_light" />
 
         <ImageView
             android:layout_width="50dp"
@@ -108,7 +122,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="3" />
+            android:layout_weight="3"
+            android:progressDrawable="@drawable/apptheme_scrubber_progress_horizontal_holo_light"
+            android:thumb="@drawable/apptheme_scrubber_control_selector_holo_light" />
 
         <ImageView
             android:layout_width="50dp"
@@ -141,7 +157,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="3" />
+            android:layout_weight="3"
+            android:progressDrawable="@drawable/apptheme_scrubber_progress_horizontal_holo_light"
+            android:thumb="@drawable/apptheme_scrubber_control_selector_holo_light" />
 
         <ImageView
             android:layout_width="50dp"
@@ -154,8 +172,11 @@
 
     <Button
         android:id="@+id/btnSave"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/changeTime"
-        android:text="@string/Save" />
+        android:background="@color/colorPrimary"
+        android:text="@string/Save"
+        android:textColor="#ffffff" />
 </RelativeLayout>

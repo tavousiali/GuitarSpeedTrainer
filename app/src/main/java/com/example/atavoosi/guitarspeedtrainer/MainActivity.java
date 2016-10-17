@@ -245,7 +245,8 @@ public class MainActivity extends AppCompatActivity
     private void stop() {
         stop.setVisibility(View.GONE);
         start.setVisibility(View.VISIBLE);
-        futureTask.cancel(true);
+        if (futureTask != null)
+            futureTask.cancel(true);
 
         // اگر بخواهیم ریست کنیم
         sleepTime = ConvertUtil.ConvertBpmToMs(fromBpm);
