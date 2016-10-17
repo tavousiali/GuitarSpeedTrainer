@@ -120,9 +120,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        changeTime = PreferenceUtil.readPreferences(MainActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue);
         fromBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
         toBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefToBpm, PrefToBpmDefaultValue);
+        changeTime = PreferenceUtil.readPreferences(MainActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue) * 1000;
         sleepTime = ConvertUtil.ConvertBpmToMs(fromBpm);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity
                     baseDate.setTime(baseDate.getTime() + changeTime);
                 }
                 try {
-                    if (sleepTime < ConvertUtil.ConvertBpmToMs(toBpm))
+                    if (sleepTime <= ConvertUtil.ConvertBpmToMs(toBpm))
                         stop();
 
                     thread.sleep(sleepTime);
@@ -292,10 +292,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.setting) {
-            try
-            {
+            try {
+                stop();
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
-            }catch(Exception e){
+            } catch (Exception e) {
 
             }
         }
