@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 
 public class SettingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
@@ -39,17 +40,21 @@ public class SettingActivity extends AppCompatActivity
     SeekBar sbChangeTime;
     TextView tvChangeTime;
     Button btnSave;
+    Spinner spinner;
 
     //Preferences
     private static String PrefFromBpm = "PrefFromBpm";
     private static String PrefToBpm = "PrefToBpm";
     private static String PrefChangeTime = "PrefChangeTime";
+    private static String PrefTickSound = "PrefTickSound";
     private static int PrefFromBpmDefaultValue = 40;
     private static int PrefToBpmDefaultValue = 208;
     private static int PrefChangeTimeDefaultValue = 5000;
+    private static String PrefTickSoundDefaultValue = "tick1";
     int changeTime;
     int fromBpm;
     int toBpm;
+    String tickSound;
 
     boolean firstRun;
 
@@ -63,6 +68,7 @@ public class SettingActivity extends AppCompatActivity
         fromBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
         toBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefToBpm, PrefToBpmDefaultValue);
         changeTime = PreferenceUtil.readPreferences(SettingActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue);
+        tickSound = PreferenceUtil.readPreferences(SettingActivity.this, PrefTickSound, PrefTickSoundDefaultValue);
 
         sbFromBpm = (SeekBar) findViewById(R.id.sbFromBpm);
         tvFromBpm = (TextView) findViewById(R.id.tvFromBpm);
@@ -90,7 +96,7 @@ public class SettingActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        //RadioButtons
         radioGroup = (RadioGroup) findViewById(R.id.bpmType);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -102,6 +108,7 @@ public class SettingActivity extends AppCompatActivity
             }
         });
 
+        //SeekBars
         sbFromBpm.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -158,6 +165,7 @@ public class SettingActivity extends AppCompatActivity
             }
         });
 
+        //btnSave
         btnSave = (Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,11 +173,13 @@ public class SettingActivity extends AppCompatActivity
                 int fromBpm = Integer.parseInt(String.valueOf(sbFromBpm.getProgress())) + 30;
                 int toBpm = Integer.parseInt(String.valueOf(sbToBpm.getProgress())) + 30;
                 int changeTime = Integer.parseInt(String.valueOf(sbChangeTime.getProgress())) + 1;
+                String tickSound = spinner.getSelectedItem().toString();
 
                 if (fromBpm < toBpm) {
                     PreferenceUtil.savePreferences(SettingActivity.this, PrefFromBpm, fromBpm);
                     PreferenceUtil.savePreferences(SettingActivity.this, PrefToBpm, toBpm);
                     PreferenceUtil.savePreferences(SettingActivity.this, PrefChangeTime, changeTime);
+                    PreferenceUtil.savePreferences(SettingActivity.this, PrefTickSound, tickSound);
                     goToMainActivity();
                 } else {
                     Toast.makeText(SettingActivity.this, "'از BPM' باید کوچکتر از 'تا BPM' باشد.", Toast.LENGTH_LONG).show();
@@ -177,11 +187,16 @@ public class SettingActivity extends AppCompatActivity
             }
         });
 
-        Spinner spinner = (Spinner) findViewById(R.id.spnTickSound);
+        //Spinner
+        spinner = (Spinner) findViewById(R.id.spnTickSound);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.TickSounds, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
+
+        String[] TickSounds = getResources().getStringArray(R.array.TickSounds);
+        int tickSoundIndex = Arrays.asList(TickSounds).indexOf(tickSound);
+        spinner.setSelection(tickSoundIndex);
     }
 
     @Override

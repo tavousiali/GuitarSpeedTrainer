@@ -45,12 +45,15 @@ public class MainActivity extends AppCompatActivity
     private static String PrefFromBpm = "PrefFromBpm";
     private static String PrefToBpm = "PrefToBpm";
     private static String PrefChangeTime = "PrefChangeTime";
+    private static String PrefTickSound = "PrefTickSound";
     private static int PrefFromBpmDefaultValue = 40;
     private static int PrefToBpmDefaultValue = 208;
     private static int PrefChangeTimeDefaultValue = 5000;
+    private static String PrefTickSoundDefaultValue = "tick1";
     int changeTime;
     int fromBpm;
     int toBpm;
+    String tickSound;
 
     //Other
     Date baseDate;
@@ -115,6 +118,7 @@ public class MainActivity extends AppCompatActivity
         fromBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
         toBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefToBpm, PrefToBpmDefaultValue);
         changeTime = PreferenceUtil.readPreferences(MainActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue) * 1000;
+        tickSound = PreferenceUtil.readPreferences(MainActivity.this, PrefTickSound, PrefTickSoundDefaultValue);
         sleepTime = ConvertUtil.ConvertBpmToMs(fromBpm);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -132,7 +136,8 @@ public class MainActivity extends AppCompatActivity
         bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
 
         mySound = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        musicId = mySound.load(this, R.raw.tick6, 1);
+        int tickId = getResources().getIdentifier(tickSound, "raw", getPackageName());
+        musicId = mySound.load(this, tickId, 1);
 
         // Your executor, you should instanciate it once for all
         scheduledExecutorService = Executors.newScheduledThreadPool(5);
