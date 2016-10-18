@@ -1,10 +1,12 @@
 package com.example.atavoosi.guitarspeedtrainer;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -21,8 +24,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
+
 public class SettingActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
 
     //Controls
     RadioGroup radioGroup;
@@ -46,10 +51,14 @@ public class SettingActivity extends AppCompatActivity
     int fromBpm;
     int toBpm;
 
+    boolean firstRun;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        firstRun = true;
 
         fromBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
         toBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefToBpm, PrefToBpmDefaultValue);
@@ -168,10 +177,11 @@ public class SettingActivity extends AppCompatActivity
             }
         });
 
-        Spinner dropdown = (Spinner)findViewById(R.id.spnBeepSound);
-        String[] items = new String[]{"Beep1", "Beep2", "Beep3"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);
+        Spinner spinner = (Spinner) findViewById(R.id.spnTickSound);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.TickSounds, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -227,4 +237,21 @@ public class SettingActivity extends AppCompatActivity
 
         }
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (!firstRun) {
+            String selectedItem = parent.getSelectedItem().toString();
+            int tickId = getResources().getIdentifier(selectedItem, "raw", getPackageName());
+            MediaPlayer mediaPlayer = MediaPlayer.create(SettingActivity.this, tickId);
+            mediaPlayer.start();
+        }
+        firstRun = false;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
 }

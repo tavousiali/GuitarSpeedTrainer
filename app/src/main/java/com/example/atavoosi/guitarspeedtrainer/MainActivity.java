@@ -5,25 +5,17 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -140,7 +132,7 @@ public class MainActivity extends AppCompatActivity
         bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
 
         mySound = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        musicId = mySound.load(this, R.raw.beep, 1);
+        musicId = mySound.load(this, R.raw.tick6, 1);
 
         // Your executor, you should instanciate it once for all
         scheduledExecutorService = Executors.newScheduledThreadPool(5);

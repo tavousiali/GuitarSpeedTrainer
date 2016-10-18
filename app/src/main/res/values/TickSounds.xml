@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="TickSounds">
+        <item>tick1</item>
+        <item>tick2</item>
+        <item>tick3</item>
+        <item>tick4</item>
+        <item>tick5</item>
+        <item>tick6</item>
+    </string-array>
+</resources>
