@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
     private static String PrefTickSound = "PrefTickSound";
     private static int PrefFromBpmDefaultValue = 40;
     private static int PrefToBpmDefaultValue = 208;
-    private static int PrefChangeTimeDefaultValue = 5000;
+    private static int PrefChangeTimeDefaultValue = 5;
     private static String PrefTickSoundDefaultValue = "tick1";
     int changeTime;
     int fromBpm;
