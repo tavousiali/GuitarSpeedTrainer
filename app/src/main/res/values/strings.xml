@@ -22,8 +22,8 @@
     <string name="Save">ذخیزه</string>
     <string name="AppbarTitle">سریع نوازی گیتار</string>
     <string name="SpeedSetting">تنظیمات سرعت</string>
-    <string name="FromBpm"> BPM از</string>
-    <string name="ToBpm"> BPM تا</string>
-    <string name="ChangeTime">طول هر BPM</string>
+    <string name="FromBpm"> از تمیو (BPM) </string>
+    <string name="ToBpm"> تا تمپو (BPM) </string>
+    <string name="ChangeTime">طول هر تمپو</string>
     <string name="BeepSound">تنظیمات صدا</string>
 </resources>
