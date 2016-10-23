@@ -268,6 +268,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.END);
         } else {
             if (doubleBackToExitPressedOnce) {
+                stop();
                 moveTaskToBack(true);
                 return;
             }
