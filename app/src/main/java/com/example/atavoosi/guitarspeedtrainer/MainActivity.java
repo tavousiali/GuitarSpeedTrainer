@@ -31,14 +31,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     //Controls
-    Button start, stop;
-    TextView bpm;
+    public static Button start, stop;
+    public static TextView bpm;
     SoundPool mySound;
     private DrawerLayout drawer;
 
     //Task
     private ScheduledExecutorService scheduledExecutorService;
-    private ScheduledFuture<?> futureTask;
+    public static ScheduledFuture<?> futureTask;
     private Runnable myTask;
     private Runnable myTaskInSecond;
 
@@ -53,13 +53,13 @@ public class MainActivity extends AppCompatActivity
     private static int PrefChangeTimeDefaultValue = 5;
     private static String PrefTickSoundDefaultValue = "tick1";
     int changeTime;
-    int fromBpm;
-    int toBpm;
+    public static int fromBpm;
+    public static int toBpm;
     String tickSound;
 
     //Other
     Date baseDate;
-    int sleepTime;
+    public static int sleepTime;
     int musicId;
     final int iterator = 5;
     final int iteratorInSecond = 5;
@@ -221,14 +221,7 @@ public class MainActivity extends AppCompatActivity
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                start.setVisibility(View.GONE);
-                stop.setVisibility(View.VISIBLE);
-                Calendar cal = Calendar.getInstance();
-                baseDate = cal.getTime();
-                baseDate.setTime(baseDate.getTime() + changeTime);
-
-                changeReadInterval(ConvertUtil.ConvertBpmToMs(fromBpm));
-
+                start();
             }
         });
 
@@ -241,7 +234,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void stop() {
+    private void start(){
+        start.setVisibility(View.GONE);
+        stop.setVisibility(View.VISIBLE);
+        Calendar cal = Calendar.getInstance();
+        baseDate = cal.getTime();
+        baseDate.setTime(baseDate.getTime() + changeTime);
+
+        changeReadInterval(ConvertUtil.ConvertBpmToMs(fromBpm));
+
+    }
+    public static void stop() {
         pause();
 
         // اگر بخواهیم ریست کنیم
@@ -250,7 +253,7 @@ public class MainActivity extends AppCompatActivity
         // اگر بخواهیم ادامه بدهیم، هیچ چیزی لازم نیست بنویسیم
     }
 
-    private void pause() {
+    public static void pause() {
         stop.setVisibility(View.GONE);
         start.setVisibility(View.VISIBLE);
         if (futureTask != null)
