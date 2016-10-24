@@ -1,5 +1,6 @@
 package com.example.atavoosi.guitarspeedtrainer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -26,6 +27,8 @@ import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SettingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
@@ -57,6 +60,12 @@ public class SettingActivity extends AppCompatActivity
     String tickSound;
 
     boolean firstRun;
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
