@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     //Controls
-    public static Button start, stop;
+    public static Button start, stop, pause;
     public static TextView bpm;
     SoundPool mySound;
     private DrawerLayout drawer;
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity
                         sleepTime = sleepTime - 100;
                         i = 0;
                     }
+                    //mySound.release();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -134,6 +138,7 @@ public class MainActivity extends AppCompatActivity
 
         start = (Button) findViewById(R.id.start);
         stop = (Button) findViewById(R.id.stop);
+        pause = (Button) findViewById(R.id.pause);
         bpm = (TextView) findViewById(R.id.bpm);
         bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
 
@@ -161,6 +166,7 @@ public class MainActivity extends AppCompatActivity
                         bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
                     }
                 });
+                //mySound.release();
 
                 if (j == iteratorInSecond) {
                     j = 0;
@@ -191,13 +197,14 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
+                //mySound.release();
 
                 Calendar cal = Calendar.getInstance();
                 Date currentDate = cal.getTime();
 
                 //Log
-//                DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
-//                Log.i("Beep", df.format(currentDate) + "_____" + df.format(baseDate) + "______" + sleepTime);
+                DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
+                Log.i("Beep", df.format(currentDate) + "_____" + df.format(baseDate) + "______" + sleepTime);
 
                 long baseDateTime = baseDate.getTime();
                 long currentDateTime = currentDate.getTime();
@@ -232,11 +239,18 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pause();
+            }
+        });
     }
 
     private void start(){
         start.setVisibility(View.GONE);
         stop.setVisibility(View.VISIBLE);
+        pause.setVisibility(View.VISIBLE);
         Calendar cal = Calendar.getInstance();
         baseDate = cal.getTime();
         baseDate.setTime(baseDate.getTime() + changeTime);
@@ -245,7 +259,11 @@ public class MainActivity extends AppCompatActivity
 
     }
     public static void stop() {
-        pause();
+        stop.setVisibility(View.GONE);
+        pause.setVisibility(View.GONE);
+        start.setVisibility(View.VISIBLE);
+        if (futureTask != null)
+            futureTask.cancel(true);
 
         // اگر بخواهیم ریست کنیم
         sleepTime = ConvertUtil.ConvertBpmToMs(fromBpm);
@@ -254,10 +272,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static void pause() {
-        stop.setVisibility(View.GONE);
+        stop.setVisibility(View.VISIBLE);
+        pause.setVisibility(View.GONE);
         start.setVisibility(View.VISIBLE);
         if (futureTask != null)
             futureTask.cancel(true);
+
     }
 
     boolean doubleBackToExitPressedOnce = false;
