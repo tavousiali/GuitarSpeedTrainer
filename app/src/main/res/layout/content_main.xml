@@ -63,7 +63,7 @@
             android:layout_below="@+id/start"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:textColor="#fff"
+            android:textColor="#aaffffff"
             android:textSize="40sp" />
     </LinearLayout>
 
