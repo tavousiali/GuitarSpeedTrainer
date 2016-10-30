@@ -145,6 +145,8 @@ public class MainActivity extends AppCompatActivity
         mySound = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
         int tickId = getResources().getIdentifier(tickSound, "raw", getPackageName());
         musicId = mySound.load(this, tickId, 1);
+        //تنظیم صدا با ولوم گوشی
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         // Your executor, you should instanciate it once for all
         scheduledExecutorService = Executors.newScheduledThreadPool(5);
