@@ -26,4 +26,5 @@
     <string name="ToBpm"> تا تمپو (BPM) </string>
     <string name="ChangeTime"> طول هر BPM بر حسب ثانیه </string>
     <string name="BeepSound">تنظیمات صدا</string>
+    <string name="TotalTime">زمان کل</string>
 </resources>

@@ -2,10 +2,7 @@ package com.example.atavoosi.guitarspeedtrainer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,14 +15,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -43,6 +37,7 @@ public class SettingActivity extends AppCompatActivity
     TextView tvChangeTime;
     Button btnSave;
     Spinner spinner;
+    TextView totalTime;
 
     //Preferences
     private static String PrefFromBpm = "PrefFromBpm";
@@ -54,9 +49,7 @@ public class SettingActivity extends AppCompatActivity
     private static int PrefChangeTimeDefaultValue = 5;
     private static int Step = 4;
     private static String PrefTickSoundDefaultValue = "tick1";
-    int changeTime;
-    int fromBpm;
-    int toBpm;
+    int changeTime, fromBpm, toBpm, onlineFromBpm, onlineToBpm, onlineChangeTime;
     String tickSound;
 
     boolean firstRun;
@@ -72,19 +65,26 @@ public class SettingActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        firstRun = true;
-
-        fromBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
-        toBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefToBpm, PrefToBpmDefaultValue);
-        changeTime = PreferenceUtil.readPreferences(SettingActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue);
-        tickSound = PreferenceUtil.readPreferences(SettingActivity.this, PrefTickSound, PrefTickSoundDefaultValue);
-
         sbFromBpm = (SeekBar) findViewById(R.id.sbFromBpm);
         tvFromBpm = (TextView) findViewById(R.id.tvFromBpm);
         sbToBpm = (SeekBar) findViewById(R.id.sbToBpm);
         tvToBpm = (TextView) findViewById(R.id.tvToBpm);
         sbChangeTime = (SeekBar) findViewById(R.id.sbChangeTime);
         tvChangeTime = (TextView) findViewById(R.id.tvChangeTime);
+        totalTime = (TextView) findViewById(R.id.totalTime);
+
+        firstRun = true;
+
+        fromBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
+        toBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefToBpm, PrefToBpmDefaultValue);
+        changeTime = PreferenceUtil.readPreferences(SettingActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue);
+        tickSound = PreferenceUtil.readPreferences(SettingActivity.this, PrefTickSound, PrefTickSoundDefaultValue);
+        onlineFromBpm = fromBpm;
+        onlineToBpm = toBpm;
+        onlineChangeTime = changeTime;
+        setTotalTime();
+
+
         sbFromBpm.setMax(70);
         sbToBpm.setMax(70);
         sbChangeTime.setMax(29);
@@ -94,7 +94,6 @@ public class SettingActivity extends AppCompatActivity
         tvToBpm.setText(String.valueOf(toBpm));
         sbChangeTime.setProgress(changeTime - 1);
         tvChangeTime.setText(String.valueOf(changeTime));
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -122,7 +121,9 @@ public class SettingActivity extends AppCompatActivity
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvFromBpm.setText(String.valueOf((progress * Step) + 20));
+                onlineFromBpm = (progress * Step) + 20;
+                tvFromBpm.setText(String.valueOf(onlineFromBpm));
+                setTotalTime();
             }
         });
 
@@ -140,7 +141,9 @@ public class SettingActivity extends AppCompatActivity
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvToBpm.setText(String.valueOf((progress * Step) + 20));
+                onlineToBpm = (progress * Step) + 20;
+                tvToBpm.setText(String.valueOf(onlineToBpm));
+                setTotalTime();
             }
         });
 
@@ -158,7 +161,9 @@ public class SettingActivity extends AppCompatActivity
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvChangeTime.setText(String.valueOf(progress + 1));
+                onlineChangeTime = progress + 1;
+                tvChangeTime.setText(String.valueOf(onlineChangeTime));
+                setTotalTime();
             }
         });
 
@@ -266,4 +271,15 @@ public class SettingActivity extends AppCompatActivity
 
     }
 
+    private void setTotalTime() {
+        String text = "";
+        int totalSec = ((onlineToBpm - onlineFromBpm) * onlineChangeTime);
+        if (totalSec < 60)
+            text = "زمان حدودی کل: " + totalSec + "ثانیه";
+        else {
+            text = "زمان حدودی کل: " + Math.round(totalSec / 60) + "دقیقه";
+        }
+
+        totalTime.setText(text);
+    }
 }
