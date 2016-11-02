@@ -34,7 +34,6 @@ public class SettingActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
 
     //Controls
-    RadioGroup radioGroup;
     private DrawerLayout drawer;
     SeekBar sbFromBpm;
     TextView tvFromBpm;
@@ -53,6 +52,7 @@ public class SettingActivity extends AppCompatActivity
     private static int PrefFromBpmDefaultValue = 40;
     private static int PrefToBpmDefaultValue = 208;
     private static int PrefChangeTimeDefaultValue = 5;
+    private static int Step = 4;
     private static String PrefTickSoundDefaultValue = "tick1";
     int changeTime;
     int fromBpm;
@@ -85,12 +85,12 @@ public class SettingActivity extends AppCompatActivity
         tvToBpm = (TextView) findViewById(R.id.tvToBpm);
         sbChangeTime = (SeekBar) findViewById(R.id.sbChangeTime);
         tvChangeTime = (TextView) findViewById(R.id.tvChangeTime);
-        sbFromBpm.setMax(270);
-        sbToBpm.setMax(270);
-        sbChangeTime.setMax(59);
-        sbFromBpm.setProgress(fromBpm - 30);
+        sbFromBpm.setMax(70);
+        sbToBpm.setMax(70);
+        sbChangeTime.setMax(29);
+        sbFromBpm.setProgress((fromBpm - 20) / Step);
         tvFromBpm.setText(String.valueOf(fromBpm));
-        sbToBpm.setProgress(toBpm - 30);
+        sbToBpm.setProgress((toBpm - 20) / Step);
         tvToBpm.setText(String.valueOf(toBpm));
         sbChangeTime.setProgress(changeTime - 1);
         tvChangeTime.setText(String.valueOf(changeTime));
@@ -104,18 +104,6 @@ public class SettingActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //RadioButtons
-        radioGroup = (RadioGroup) findViewById(R.id.bpmType);
-
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                // checkedId is the RadioButton selected
-                RadioButton rb = (RadioButton) findViewById(checkedId);
-                Toast.makeText(SettingActivity.this, rb.getText().toString(), Toast.LENGTH_LONG).show();
-            }
-        });
 
         //SeekBars
         sbFromBpm.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -134,7 +122,7 @@ public class SettingActivity extends AppCompatActivity
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvFromBpm.setText(String.valueOf(progress + 30));
+                tvFromBpm.setText(String.valueOf((progress * Step) + 20));
             }
         });
 
@@ -152,7 +140,7 @@ public class SettingActivity extends AppCompatActivity
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvToBpm.setText(String.valueOf(progress + 30));
+                tvToBpm.setText(String.valueOf((progress * Step) + 20));
             }
         });
 
@@ -179,8 +167,8 @@ public class SettingActivity extends AppCompatActivity
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int fromBpm = Integer.parseInt(String.valueOf(sbFromBpm.getProgress())) + 30;
-                int toBpm = Integer.parseInt(String.valueOf(sbToBpm.getProgress())) + 30;
+                int fromBpm = Integer.parseInt(String.valueOf(sbFromBpm.getProgress() * Step)) + 20;
+                int toBpm = Integer.parseInt(String.valueOf(sbToBpm.getProgress() * Step)) + 20;
                 int changeTime = Integer.parseInt(String.valueOf(sbChangeTime.getProgress())) + 1;
                 String tickSound = spinner.getSelectedItem().toString();
 

@@ -36,62 +36,6 @@
                 android:background="@android:color/darker_gray" />
         </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/radioButtonGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="10dp">
-
-            <RadioGroup
-                android:id="@+id/bpmType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/StartStopBpmCount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/rbtn_selector"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/StartStopBpmCount"
-                    android:textColor="@drawable/rbtn_textcolor_selector" />
-
-                <RadioButton
-                    android:id="@+id/StartStopChangeTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/rbtn_selector"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/StartStopChangeTime"
-                    android:textColor="@drawable/rbtn_textcolor_selector" />
-
-                <RadioButton
-                    android:id="@+id/StartStopTotalTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/rbtn_selector"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/StartStopTotalTime"
-                    android:textColor="@drawable/rbtn_textcolor_selector" />
-            </RadioGroup>
-
-        </LinearLayout>
-
-
         <LinearLayout
             android:id="@+id/fromBpm"
             android:layout_width="match_parent"

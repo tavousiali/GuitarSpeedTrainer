@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
         bpm = (TextView) findViewById(R.id.bpm);
         bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
 
-        mySound = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+        mySound = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
         int tickId = getResources().getIdentifier(tickSound, "raw", getPackageName());
         musicId = mySound.load(this, tickId, 1);
         //تنظیم صدا با ولوم گوشی
@@ -205,8 +205,8 @@ public class MainActivity extends AppCompatActivity
                 Date currentDate = cal.getTime();
 
                 //Log
-                DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
-                Log.i("Beep", df.format(currentDate) + "_____" + df.format(baseDate) + "______" + sleepTime);
+                //DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
+                //Log.i("Beep", df.format(currentDate) + "_____" + df.format(baseDate) + "______" + sleepTime);
 
                 long baseDateTime = baseDate.getTime();
                 long currentDateTime = currentDate.getTime();
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity
                     baseDate.setTime(baseDate.getTime() + changeTime);
                 }
                 try {
-                    if (sleepTime <= ConvertUtil.ConvertBpmToMs(toBpm))
+                    if (sleepTime < ConvertUtil.ConvertBpmToMs(toBpm))
                         stop();
 
                     thread.sleep(sleepTime);
@@ -250,9 +250,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void start(){
-        start.setVisibility(View.GONE);
-        stop.setVisibility(View.VISIBLE);
-        pause.setVisibility(View.VISIBLE);
+        start.post(new Runnable() {
+            public void run() {
+                start.setVisibility(View.GONE);
+            }
+        });
+        stop.post(new Runnable() {
+            public void run() {
+                stop.setVisibility(View.VISIBLE);
+            }
+        });
+        pause.post(new Runnable() {
+            public void run() {
+                pause.setVisibility(View.VISIBLE);
+            }
+        });
+
         Calendar cal = Calendar.getInstance();
         baseDate = cal.getTime();
         baseDate.setTime(baseDate.getTime() + changeTime);
@@ -261,9 +274,22 @@ public class MainActivity extends AppCompatActivity
 
     }
     public static void stop() {
-        stop.setVisibility(View.GONE);
-        pause.setVisibility(View.GONE);
-        start.setVisibility(View.VISIBLE);
+        start.post(new Runnable() {
+            public void run() {
+                start.setVisibility(View.VISIBLE);
+            }
+        });
+        stop.post(new Runnable() {
+            public void run() {
+                stop.setVisibility(View.GONE);
+            }
+        });
+        pause.post(new Runnable() {
+            public void run() {
+                pause.setVisibility(View.GONE);
+            }
+        });
+
         if (futureTask != null)
             futureTask.cancel(true);
 
@@ -274,9 +300,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static void pause() {
-        stop.setVisibility(View.VISIBLE);
-        pause.setVisibility(View.GONE);
-        start.setVisibility(View.VISIBLE);
+        start.post(new Runnable() {
+            public void run() {
+                start.setVisibility(View.VISIBLE);
+            }
+        });
+        stop.post(new Runnable() {
+            public void run() {
+                stop.setVisibility(View.VISIBLE);
+            }
+        });
+        pause.post(new Runnable() {
+            public void run() {
+                pause.setVisibility(View.GONE);
+            }
+        });
+
         if (futureTask != null)
             futureTask.cancel(true);
 
