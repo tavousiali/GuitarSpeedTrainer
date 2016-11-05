@@ -11,7 +11,7 @@ public class CallReceiver extends PhonecallReceiver {
     protected void onIncomingCallReceived(Context ctx, String number, Date start)
     {
         //بعدا که دکمه پلی-پاوز درست شد، به جای استپ، از پاوز استفاده شود
-        MainActivity.stop();
+        MainActivity.pause();
         Log.i("number", "onIncomingCallReceived:" + number);
     }
 
