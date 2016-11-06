@@ -192,7 +192,6 @@ public class MainActivity extends AppCompatActivity
                 //Play sound
                 mySound.play(musicId, 1, 1, 1, 0, 1);
 
-
                 bpm.post(new Runnable() {
                     public void run() {
                         bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
