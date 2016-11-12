@@ -183,7 +183,7 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
                     PreferenceUtil.savePreferences(SettingActivity.this, PrefTickSound, tickSound);
                     goToMainActivity();
                 } else {
-                    Toast.makeText(SettingActivity.this, "'از BPM' باید کوچکتر از 'تا BPM' باشد.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SettingActivity.this, "'از تمپو' باید کوچکتر از 'تا تمپو' باشد.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -259,10 +259,12 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
     private void setTotalTime() {
         String text = "";
         int totalSec = ((onlineToBpm - onlineFromBpm) * onlineChangeTime);
-        if (totalSec < 60)
-            text = "زمان حدودی کل: " + totalSec + "ثانیه";
-        else {
-            text = "زمان حدودی کل: " + Math.round(totalSec / 60) + "دقیقه";
+        if (totalSec > 0) {
+            if (totalSec < 60)
+                text = "زمان حدودی کل: " + totalSec + "ثانیه";
+            else {
+                text = "زمان حدودی کل: " + Math.round(totalSec / 60) + "دقیقه";
+            }
         }
 
         totalTime.setText(text);
