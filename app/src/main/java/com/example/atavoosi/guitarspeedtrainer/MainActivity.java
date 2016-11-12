@@ -1,26 +1,15 @@
 package com.example.atavoosi.guitarspeedtrainer;
 
 import android.content.Context;
-import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.Callable;
@@ -34,17 +23,16 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class MainActivity extends BaseNavigationActivity {
 
     //region ## VARIABLES ##
+
     //Controls
     public static Button start, stop, pause;
     public static TextView bpm;
     SoundPool mySound;
-    private DrawerLayout drawer;
 
     //Task
     private ScheduledExecutorService scheduledExecutorService;
     public static ScheduledFuture<?> futureTask;
     private Runnable task;
-
 
     //Preferences
     private static String PrefFromBpm = "PrefFromBpm";
@@ -64,8 +52,62 @@ public class MainActivity extends BaseNavigationActivity {
     Date baseDate;
     public static int sleepTime;
     int musicId;
-    int j = 0;
+
     //endregion
+
+    // region ## EVENTS ##
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.setContent(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+
+        init();
+
+        //تنظیم صدا با ولوم گوشی
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackClicked(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                stop();
+                return null;
+            }
+        });
+
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        stop();
+        super.onNavigationItemSelected(item, this);
+        return true;
+    }
+
+    //endregion
+
+    // region ## METHODS ##
 
     public void changeReadInterval(long time) {
         if (time > 0) {
@@ -75,11 +117,6 @@ public class MainActivity extends BaseNavigationActivity {
 
             futureTask = scheduledExecutorService.scheduleAtFixedRate(task, 0, time, TimeUnit.MILLISECONDS);
         }
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     private void init() {
@@ -115,8 +152,6 @@ public class MainActivity extends BaseNavigationActivity {
                         bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
                     }
                 });
-
-                //mySound.release();
 
                 Calendar cal = Calendar.getInstance();
                 Date currentDate = cal.getTime();
@@ -164,17 +199,6 @@ public class MainActivity extends BaseNavigationActivity {
                 pause();
             }
         });
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.setContent(R.layout.activity_main);
-        super.onCreate(savedInstanceState);
-
-        init();
-
-        //تنظیم صدا با ولوم گوشی
-        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
     }
 
     private void start() {
@@ -250,52 +274,6 @@ public class MainActivity extends BaseNavigationActivity {
 
     }
 
-    public int methodToPass() {
-        return 2;
-    }
+    //endregion
 
-    public void dansMethod(Callable myFunc) {
-        // do something
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackClicked(new Callable() {
-            @Override
-            public Object call() throws Exception {
-                stop();
-                return null;
-            }
-        });
-
-        super.onBackPressed();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        stop();
-        super.onNavigationItemSelected(item, this);
-        return true;
-    }
-//
-//    public void stopAndGoToSetting(){
-//        try {
-//            stop();
-//            startActivity(new Intent(MainActivity.this, SettingActivity.class));
-//        } catch (Exception e) {
-//
-//        }
-//    }
 }

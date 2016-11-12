@@ -25,10 +25,11 @@ import java.util.concurrent.Callable;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class SettingActivity extends BaseNavigationActivity implements AdapterView.OnItemSelectedListener {
+public class SettingActivity extends BaseNavigationActivity implements AdapterView.OnItemSelectedListener, SeekBar.OnSeekBarChangeListener {
+
+    //region ## VARIABLES ##
 
     //Controls
-    private DrawerLayout drawer;
     SeekBar sbFromBpm;
     TextView tvFromBpm;
     SeekBar sbToBpm;
@@ -54,6 +55,9 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
 
     boolean firstRun;
 
+    //endregion
+
+    // region ## EVENTS ##
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -65,98 +69,14 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
         super.setContent(R.layout.activity_setting);
         super.onCreate(savedInstanceState);
 
-        sbFromBpm = (SeekBar) findViewById(R.id.sbFromBpm);
-        tvFromBpm = (TextView) findViewById(R.id.tvFromBpm);
-        sbToBpm = (SeekBar) findViewById(R.id.sbToBpm);
-        tvToBpm = (TextView) findViewById(R.id.tvToBpm);
-        sbChangeTime = (SeekBar) findViewById(R.id.sbChangeTime);
-        tvChangeTime = (TextView) findViewById(R.id.tvChangeTime);
-        totalTime = (TextView) findViewById(R.id.totalTime);
+        init();
 
-        firstRun = true;
-
-        fromBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
-        toBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefToBpm, PrefToBpmDefaultValue);
-        changeTime = PreferenceUtil.readPreferences(SettingActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue);
-        tickSound = PreferenceUtil.readPreferences(SettingActivity.this, PrefTickSound, PrefTickSoundDefaultValue);
-        onlineFromBpm = fromBpm;
-        onlineToBpm = toBpm;
-        onlineChangeTime = changeTime;
         setTotalTime();
 
-
-        sbFromBpm.setMax(70);
-        sbToBpm.setMax(70);
-        sbChangeTime.setMax(29);
-        sbFromBpm.setProgress((fromBpm - 20) / Step);
-        tvFromBpm.setText(String.valueOf(fromBpm));
-        sbToBpm.setProgress((toBpm - 20) / Step);
-        tvToBpm.setText(String.valueOf(toBpm));
-        sbChangeTime.setProgress(changeTime - 1);
-        tvChangeTime.setText(String.valueOf(changeTime));
-
         //SeekBars
-        sbFromBpm.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-                //int inVal = Integer.parseInt(String.valueOf(seekBar.getProgress())) + 30;
-                //PreferenceUtil.savePreferences(SettingActivity.this, PrefFromBpm, inVal);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                onlineFromBpm = (progress * Step) + 20;
-                tvFromBpm.setText(String.valueOf(onlineFromBpm));
-                setTotalTime();
-            }
-        });
-
-        sbToBpm.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                onlineToBpm = (progress * Step) + 20;
-                tvToBpm.setText(String.valueOf(onlineToBpm));
-                setTotalTime();
-            }
-        });
-
-        sbChangeTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                onlineChangeTime = progress + 1;
-                tvChangeTime.setText(String.valueOf(onlineChangeTime));
-                setTotalTime();
-            }
-        });
+        sbFromBpm.setOnSeekBarChangeListener(this);
+        sbToBpm.setOnSeekBarChangeListener(this);
+        sbChangeTime.setOnSeekBarChangeListener(this);
 
         //btnSave
         btnSave = (Button) findViewById(R.id.btnSave);
@@ -222,14 +142,6 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
         return true;
     }
 
-    public void goToMainActivity() {
-        try {
-            startActivity(new Intent(SettingActivity.this, MainActivity.class));
-        } catch (Exception e) {
-
-        }
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (!firstRun) {
@@ -246,6 +158,50 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
 
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        switch (seekBar.getId()) {
+            case R.id.sbFromBpm:
+                onlineFromBpm = (progress * Step) + 20;
+                tvFromBpm.setText(String.valueOf(onlineFromBpm));
+                setTotalTime();
+                break;
+            case R.id.sbToBpm:
+                onlineToBpm = (progress * Step) + 20;
+                tvToBpm.setText(String.valueOf(onlineToBpm));
+                setTotalTime();
+                break;
+            case R.id.sbChangeTime:
+                onlineChangeTime = progress + 1;
+                tvChangeTime.setText(String.valueOf(onlineChangeTime));
+                setTotalTime();
+                break;
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    //endregion
+
+    // region ## METHODS ##
+
+    public void goToMainActivity() {
+        try {
+            startActivity(new Intent(SettingActivity.this, MainActivity.class));
+        } catch (Exception e) {
+
+        }
+    }
+
+
     private void setTotalTime() {
         String text = "";
         int totalSec = ((onlineToBpm - onlineFromBpm) * onlineChangeTime);
@@ -259,4 +215,35 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
 
         totalTime.setText(text);
     }
+
+    private void init() {
+        sbFromBpm = (SeekBar) findViewById(R.id.sbFromBpm);
+        tvFromBpm = (TextView) findViewById(R.id.tvFromBpm);
+        sbToBpm = (SeekBar) findViewById(R.id.sbToBpm);
+        tvToBpm = (TextView) findViewById(R.id.tvToBpm);
+        sbChangeTime = (SeekBar) findViewById(R.id.sbChangeTime);
+        tvChangeTime = (TextView) findViewById(R.id.tvChangeTime);
+        totalTime = (TextView) findViewById(R.id.totalTime);
+
+        firstRun = true;
+
+        fromBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
+        toBpm = PreferenceUtil.readPreferences(SettingActivity.this, PrefToBpm, PrefToBpmDefaultValue);
+        changeTime = PreferenceUtil.readPreferences(SettingActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue);
+        tickSound = PreferenceUtil.readPreferences(SettingActivity.this, PrefTickSound, PrefTickSoundDefaultValue);
+        onlineFromBpm = fromBpm;
+        onlineToBpm = toBpm;
+        onlineChangeTime = changeTime;
+
+        sbFromBpm.setMax(70);
+        sbToBpm.setMax(70);
+        sbChangeTime.setMax(29);
+        sbFromBpm.setProgress((fromBpm - 20) / Step);
+        tvFromBpm.setText(String.valueOf(fromBpm));
+        sbToBpm.setProgress((toBpm - 20) / Step);
+        tvToBpm.setText(String.valueOf(toBpm));
+        sbChangeTime.setProgress(changeTime - 1);
+        tvChangeTime.setText(String.valueOf(changeTime));
+    }
+    //endregion
 }
