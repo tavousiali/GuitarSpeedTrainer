@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
+import java.util.concurrent.Callable;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -93,15 +94,6 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
         tvToBpm.setText(String.valueOf(toBpm));
         sbChangeTime.setProgress(changeTime - 1);
         tvChangeTime.setText(String.valueOf(changeTime));
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         //SeekBars
         sbFromBpm.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -202,6 +194,13 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
 
     @Override
     public void onBackPressed() {
+        super.onBackClicked(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                return null;
+            }
+        });
+
         super.onBackPressed();
     }
 
@@ -219,20 +218,11 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-//        super.onNavigationItemSelected(item);
-//        return true;
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.mainPage) {
-            goToMainActivity();
-        }
-
-        drawer.closeDrawer(GravityCompat.END);
+        super.onNavigationItemSelected(item, this);
         return true;
     }
 
-    private void goToMainActivity() {
+    public void goToMainActivity() {
         try {
             startActivity(new Intent(SettingActivity.this, MainActivity.class));
         } catch (Exception e) {

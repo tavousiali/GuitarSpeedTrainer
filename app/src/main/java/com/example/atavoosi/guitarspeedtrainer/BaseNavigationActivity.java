@@ -1,8 +1,10 @@
 package com.example.atavoosi.guitarspeedtrainer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,6 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.concurrent.Callable;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -22,6 +27,7 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
     }
 
     private DrawerLayout drawer;
+    boolean doubleBackToExitPressedOnce = false;
 
     protected void setContent(int layout) {
         setContentView(layout);
@@ -48,12 +54,30 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
         }
     }
 
-    @Override
-    public void onBackPressed() {
+    protected void onBackClicked(Callable func) {
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce) {
+                try {
+                    func.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                moveTaskToBack(true);
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "برای خروج بار دیگر کلیک کنید", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
         }
     }
 
@@ -80,28 +104,27 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+    public void onNavigationItemSelected(MenuItem item, Context context) {
+        drawer.closeDrawer(GravityCompat.END);
+
+        if ((context.getClass().getName().contains("MainActivity") && item.getItemId() == R.id.mainPage) ||
+            (context.getClass().getName().contains("SettingActivity") && item.getItemId() == R.id.setting))
+            return;
+
         int id = item.getItemId();
 
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
-
-        drawer.closeDrawer(GravityCompat.END);
-        return true;
+        if (id == R.id.setting) {
+            try {
+                startActivity(new Intent(context, SettingActivity.class));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (id == R.id.mainPage) {
+            try {
+                startActivity(new Intent(context, MainActivity.class));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
-
 }

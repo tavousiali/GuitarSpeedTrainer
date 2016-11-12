@@ -23,6 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -42,8 +43,7 @@ public class MainActivity extends BaseNavigationActivity {
     //Task
     private ScheduledExecutorService scheduledExecutorService;
     public static ScheduledFuture<?> futureTask;
-    private Runnable myTask;
-    private Runnable myTaskInSecond;
+    private Runnable task;
 
 
     //Preferences
@@ -64,43 +64,8 @@ public class MainActivity extends BaseNavigationActivity {
     Date baseDate;
     public static int sleepTime;
     int musicId;
-    final int iterator = 5;
-    final int iteratorInSecond = 5;
     int j = 0;
     //endregion
-
-
-    Thread thread = new Thread() {
-
-        public void run() {
-
-            for (int i = 0; i < iterator; i++) {
-
-                try {
-                    sleep(sleepTime);
-
-                    j++;
-
-                    //Log
-//                    DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
-//                    Date dateobj = new Date();
-//                    Log.i("Beep", df.format(dateobj) + "_____" + sleepTime + "_____" + j);
-
-                    mySound.play(musicId, 1, 1, 1, 0, 1);
-//
-                    if (i == iterator - 1) {
-                        sleepTime = sleepTime - 100;
-                        i = 0;
-                    }
-                    //mySound.release();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-    };
 
     public void changeReadInterval(long time) {
         if (time > 0) {
@@ -108,8 +73,7 @@ public class MainActivity extends BaseNavigationActivity {
                 futureTask.cancel(true);
             }
 
-            //futureTask = scheduledExecutorService.scheduleAtFixedRate(myTask, 0, time, TimeUnit.MILLISECONDS);
-            futureTask = scheduledExecutorService.scheduleAtFixedRate(myTaskInSecond, 0, time, TimeUnit.MILLISECONDS);
+            futureTask = scheduledExecutorService.scheduleAtFixedRate(task, 0, time, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -118,25 +82,12 @@ public class MainActivity extends BaseNavigationActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.setContent(R.layout.activity_main);
-        super.onCreate(savedInstanceState);
-
+    private void init() {
         fromBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefFromBpm, PrefFromBpmDefaultValue);
         toBpm = PreferenceUtil.readPreferences(MainActivity.this, PrefToBpm, PrefToBpmDefaultValue);
         changeTime = PreferenceUtil.readPreferences(MainActivity.this, PrefChangeTime, PrefChangeTimeDefaultValue) * 1000;
         tickSound = PreferenceUtil.readPreferences(MainActivity.this, PrefTickSound, PrefTickSoundDefaultValue);
         sleepTime = ConvertUtil.ConvertBpmToMs(fromBpm);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         start = (Button) findViewById(R.id.start);
         stop = (Button) findViewById(R.id.stop);
@@ -147,46 +98,11 @@ public class MainActivity extends BaseNavigationActivity {
         mySound = new SoundPool(100, AudioManager.STREAM_MUSIC, 0);
         int tickId = getResources().getIdentifier(tickSound, "raw", getPackageName());
         musicId = mySound.load(this, tickId, 1);
-        //تنظیم صدا با ولوم گوشی
-        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         // Your executor, you should instanciate it once for all
         scheduledExecutorService = Executors.newScheduledThreadPool(5);
 
-        // Since your task won't change during runtime, you can instanciate it too once for all
-        myTask = new Runnable() {
-            @Override
-            public void run() {
-                //Log
-//                DateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm:ss:SS");
-//                Date date = new Date();
-//                Log.i("Beep", df.format(date) + "_____" + sleepTime);
-
-                //Play sound
-                mySound.play(musicId, 1, 1, 1, 0, 1);
-
-                bpm.post(new Runnable() {
-                    public void run() {
-                        bpm.setText(String.valueOf(ConvertUtil.ConvertMsToBpm(sleepTime)));
-                    }
-                });
-                //mySound.release();
-
-                if (j == iteratorInSecond) {
-                    j = 0;
-                    sleepTime = sleepTime - 10;
-                }
-                try {
-                    thread.sleep(sleepTime);
-                    changeReadInterval(sleepTime);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        };
-
-        myTaskInSecond = new Runnable() {
+        task = new Runnable() {
 
             @Override
             public void run() {
@@ -220,7 +136,7 @@ public class MainActivity extends BaseNavigationActivity {
                     if (sleepTime < ConvertUtil.ConvertBpmToMs(toBpm))
                         stop();
 
-                    thread.sleep(sleepTime);
+                    Thread.sleep(sleepTime);
                     changeReadInterval(sleepTime);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -250,7 +166,18 @@ public class MainActivity extends BaseNavigationActivity {
         });
     }
 
-    private void start(){
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.setContent(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+
+        init();
+
+        //تنظیم صدا با ولوم گوشی
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+    }
+
+    private void start() {
         start.post(new Runnable() {
             public void run() {
                 start.setVisibility(View.GONE);
@@ -274,6 +201,7 @@ public class MainActivity extends BaseNavigationActivity {
         changeReadInterval(ConvertUtil.ConvertBpmToMs(fromBpm));
 
     }
+
     public static void stop() {
         start.post(new Runnable() {
             public void run() {
@@ -322,10 +250,24 @@ public class MainActivity extends BaseNavigationActivity {
 
     }
 
-    boolean doubleBackToExitPressedOnce = false;
+    public int methodToPass() {
+        return 2;
+    }
+
+    public void dansMethod(Callable myFunc) {
+        // do something
+    }
 
     @Override
     public void onBackPressed() {
+        super.onBackClicked(new Callable() {
+            @Override
+            public Object call() throws Exception {
+                stop();
+                return null;
+            }
+        });
+
         super.onBackPressed();
     }
 
@@ -343,21 +285,17 @@ public class MainActivity extends BaseNavigationActivity {
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-//        super.onNavigationItemSelected(item);
-//        return true;
-        int id = item.getItemId();
-
-        if (id == R.id.setting) {
-            try {
-                stop();
-                startActivity(new Intent(MainActivity.this, SettingActivity.class));
-            } catch (Exception e) {
-
-            }
-        }
-
-        drawer.closeDrawer(GravityCompat.END);
+        stop();
+        super.onNavigationItemSelected(item, this);
         return true;
     }
-
+//
+//    public void stopAndGoToSetting(){
+//        try {
+//            stop();
+//            startActivity(new Intent(MainActivity.this, SettingActivity.class));
+//        } catch (Exception e) {
+//
+//        }
+//    }
 }

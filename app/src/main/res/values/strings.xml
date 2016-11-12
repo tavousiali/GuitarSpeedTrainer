@@ -19,7 +19,7 @@
     <string name="from_bpm">from_bpm</string>
     <string name="TvFromBpm">30</string>
     <string name="TvToBpm">300</string>
-    <string name="Save">ذخیزه</string>
+    <string name="Save">ذخیره</string>
     <string name="AppbarTitle">سریع نوازی گیتار</string>
     <string name="SpeedSetting">تنظیمات سرعت</string>
     <string name="FromBpm"> از تمیو (BPM) </string>
