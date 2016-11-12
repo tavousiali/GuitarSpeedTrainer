@@ -24,8 +24,7 @@ import java.util.Arrays;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class SettingActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
+public class SettingActivity extends BaseNavigationActivity implements AdapterView.OnItemSelectedListener {
 
     //Controls
     private DrawerLayout drawer;
@@ -62,8 +61,8 @@ public class SettingActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.setContent(R.layout.activity_setting);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
 
         sbFromBpm = (SeekBar) findViewById(R.id.sbFromBpm);
         tvFromBpm = (TextView) findViewById(R.id.tvFromBpm);
@@ -203,39 +202,25 @@ public class SettingActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.END)) {
-            drawer.closeDrawer(GravityCompat.END);
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.navigetion_icon) {
-            drawer.openDrawer(GravityCompat.END);
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+//        super.onNavigationItemSelected(item);
+//        return true;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
