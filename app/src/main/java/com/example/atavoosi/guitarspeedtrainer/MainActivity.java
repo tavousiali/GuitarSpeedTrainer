@@ -81,9 +81,7 @@ public class MainActivity extends BaseNavigationActivity {
                 stop();
                 return null;
             }
-        });
-
-        super.onBackPressed();
+        }, "MainActivity");
     }
 
     @Override

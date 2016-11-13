@@ -44,9 +44,7 @@ public class AboutActivity extends BaseNavigationActivity {
             public Object call() throws Exception {
                 return null;
             }
-        });
-
-        super.onBackPressed();
+        }, null);
     }
 
     @Override

@@ -119,9 +119,7 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
             public Object call() throws Exception {
                 return null;
             }
-        });
-
-        super.onBackPressed();
+        }, null);
     }
 
     @Override

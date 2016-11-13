@@ -54,31 +54,37 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
         }
     }
 
-    protected void onBackClicked(Callable func) {
+    protected void onBackClicked(Callable func, String className) {
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
         } else {
-            if (doubleBackToExitPressedOnce) {
-                try {
-                    func.call();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if (className == "MainActivity") {
+                if (doubleBackToExitPressedOnce) {
+                    try {
+                        func.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    super.onBackPressed();
+                    return;
                 }
-                moveTaskToBack(true);
+
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "برای خروج بار دیگر کلیک کنید", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            } else {
+                super.onBackPressed();
                 return;
             }
-
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "برای خروج بار دیگر کلیک کنید", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce = false;
-                }
-            }, 2000);
         }
+
     }
 
     @Override
