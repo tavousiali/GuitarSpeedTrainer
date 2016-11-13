@@ -28,5 +28,9 @@
     <string name="BeepSound">تنظیمات صدا</string>
     <string name="TotalTime">زمان کل</string>
     <string name="title_activity_main">سریع نوازی گیتار</string>
+    <string name="title_activity_mainpage">صفحه نخست</string>
     <string name="title_activity_about">درباره نرم افزار</string>
+    <string name="title_activity_contactus">تماس با ما</string>
+    <string name="defaultpassword">User Guide <a href="http://www.cleverfinger.com.au/user-guide/">http://www.cleverfinger.com.au/user-guide/</a></string>
+    <string name="contactus">برای تماس با مدیر برنامه می‌توانید با آدرس ایمیل <a href="mailto:tavousi.ali@gmail.com" target="_top">tavousi.ali@gmail.com</a> و یا تلگرام <a href="https://telegram.me/tavousiali" target="_top">https://telegram.me/tavousiali</a> تماس بگیرید.</string>
 </resources>

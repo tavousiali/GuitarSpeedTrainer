@@ -137,6 +137,12 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (id == R.id.contactus) {
+            try {
+                startActivity(new Intent(context, ContactusActivity.class));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
