@@ -74,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:lineSpacingExtra="5dp"
                     android:text="امکانات برنامه سریع نوازی گیتار:"
                     android:textColor="#000"
                     android:textSize="16sp" />
@@ -82,36 +83,42 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="5dp"
                     android:text="-	امکان انتخاب تمپو شروع از ۲۰" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="5dp"
                     android:text="-	امکان انتخاب تمپو پایان تا ۳۰۰" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="5dp"
                     android:text="-	امکان انتخاب طول مدت هر BMP از ۱ ثانیه تا ۳۰ ثانیه" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="5dp"
                     android:text="-	امکان انتخاب نوع صدا" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="5dp"
                     android:text="-	امکان پخش، مکث و توقف ( Play، Pause، Stop)" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:lineSpacingExtra="5dp"
                     android:text="   امکان Pasue کردن، برای کاربر خیلی مهم هست. که در هیچ کدام از نسخه های برنامه Guitar Speed Trainer وجود ندارد." />
             </LinearLayout>
         </LinearLayout>
