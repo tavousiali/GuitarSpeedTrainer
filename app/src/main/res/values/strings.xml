@@ -28,4 +28,5 @@
     <string name="BeepSound">تنظیمات صدا</string>
     <string name="TotalTime">زمان کل</string>
     <string name="title_activity_main">سریع نوازی گیتار</string>
+    <string name="title_activity_about">درباره نرم افزار</string>
 </resources>

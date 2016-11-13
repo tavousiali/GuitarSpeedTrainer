@@ -108,7 +108,7 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
         drawer.closeDrawer(GravityCompat.END);
 
         if ((context.getClass().getName().contains("MainActivity") && item.getItemId() == R.id.mainPage) ||
-            (context.getClass().getName().contains("SettingActivity") && item.getItemId() == R.id.setting))
+                (context.getClass().getName().contains("SettingActivity") && item.getItemId() == R.id.setting))
             return;
 
         int id = item.getItemId();
@@ -122,6 +122,12 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
         } else if (id == R.id.mainPage) {
             try {
                 startActivity(new Intent(context, MainActivity.class));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (id == R.id.about) {
+            try {
+                startActivity(new Intent(context, AboutActivity.class));
             } catch (Exception e) {
                 e.printStackTrace();
             }
