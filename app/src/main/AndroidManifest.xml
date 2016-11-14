@@ -40,9 +40,13 @@
             android:name=".AboutActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_about" />
-        <activity android:name=".ContactusActivity"
+        <activity
+            android:name=".ContactusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_contactus"></activity>
+            android:label="@string/title_activity_contactus" />
+        <activity android:name=".SimilarAppActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_similarapp"></activity>
     </application>
 
 </manifest>

@@ -143,6 +143,12 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else if (id == R.id.similarapp) {
+            try {
+                startActivity(new Intent(context, SimilarAppActivity.class));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -18,6 +18,10 @@
             android:id="@+id/contactus"
             android:icon="@drawable/ic_menu_contactus"
             android:title="@string/title_activity_contactus"/>
+        <item
+            android:id="@+id/similarapp"
+            android:icon="@drawable/ic_menu_similar_app"
+            android:title="@string/title_activity_similarapp"/>
     </group>
 
 </menu>
