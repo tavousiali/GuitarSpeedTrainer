@@ -1,10 +1,13 @@
 package com.example.atavoosi.guitarspeedtrainer;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.concurrent.Callable;
 
@@ -24,6 +27,27 @@ public class ContactusActivity extends BaseNavigationActivity {
         super.setContent(R.layout.activity_contactus);
         super.onCreate(savedInstanceState);
 
+        TextView telegram = (TextView) findViewById(R.id.cu_telegram);
+        telegram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent telegram = new Intent(Intent.ACTION_VIEW , Uri.parse("https://telegram.me/tavousiali"));
+                startActivity(telegram);
+            }
+        });
+
+        TextView email = (TextView) findViewById(R.id.cu_email);
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("plain/text");
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "tavousi.ali@gmail.com" });
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Guitar Speed Trainer");
+                intent.putExtra(Intent.EXTRA_TEXT, "");
+                startActivity(Intent.createChooser(intent, ""));
+            }
+        });
     }
 
     @Override
