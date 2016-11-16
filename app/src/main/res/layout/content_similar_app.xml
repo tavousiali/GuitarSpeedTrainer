@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/card_view"
                 android:layout_width="match_parent"
@@ -31,8 +32,7 @@
                         android:layout_height="200dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/main_activity_background" />
+                        android:scaleType="fitXY" />
 
                     <TextView
                         android:id="@+id/title"
@@ -44,19 +44,18 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:paddingTop="8dp"
-                        android:text="گیتار سولو"
                         android:textColor="#222"
                         android:textSize="22dp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/desc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/title"
                         android:lineSpacingExtra="10dp"
                         android:maxLines="3"
                         android:padding="8dp"
-                        android:text="نرم افزاری برای دریافت اطلاعات کامل (از جمله، آهنگ، نت گیتار پرو، آکورد، ویدئوی آموزشی و ...)، مرتبط با گیتار، برای آهنگ های مختلف"
                         android:textColor="#666"
                         android:textSize="14dp" />
 
@@ -82,8 +81,7 @@
                         android:layout_height="200dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/main_activity_background" />
+                        android:scaleType="fitXY" />
 
                     <TextView
                         android:id="@+id/title2"
@@ -95,19 +93,18 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:paddingTop="8dp"
-                        android:text="گیتار سولو"
                         android:textColor="#222"
                         android:textSize="22dp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/desc2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/title2"
                         android:lineSpacingExtra="10dp"
                         android:maxLines="3"
                         android:padding="8dp"
-                        android:text="نرم افزاری برای دریافت اطلاعات کامل (از جمله، آهنگ، نت گیتار پرو، آکورد، ویدئوی آموزشی و ...)، مرتبط با گیتار، برای آهنگ های مختلف"
                         android:textColor="#666"
                         android:textSize="14dp" />
 
