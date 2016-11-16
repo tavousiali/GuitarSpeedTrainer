@@ -43,7 +43,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         Picasso.with(context)
                 .load(items.get(position).imageUrl)
-                .error(R.drawable.ic_menu) //باید تصحیح شود
+                .error(R.drawable.image_pre_view)
                 .placeholder(R.drawable.image_pre_view)
                 .into(holder.thumbnail);
 
