@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +40,9 @@ public class SimilarAppActivity extends BaseNavigationActivity {
         super.setContent(R.layout.activity_similar_app);
         super.onCreate(savedInstanceState);
 
+
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://cdn.persiangig.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -49,31 +54,11 @@ public class SimilarAppActivity extends BaseNavigationActivity {
         call.enqueue(new Callback<SimilarAppModel>() {
             @Override
             public void onResponse(Call<SimilarAppModel> call, Response<SimilarAppModel> response) {
-                Log.d("Ali", response.body().SimilarApp.toString());
                 List<SimilarAppModel.SimilarApp> similarApps = response.body().SimilarApp;
-                SimilarAppModel.SimilarApp firstSimilarApp = similarApps.get(0);
-                SimilarAppModel.SimilarApp secondSimilarApp = similarApps.get(1);
 
-                ImageView imageView = (ImageView) findViewById(R.id.thumbnail);
-                Picasso.with(SimilarAppActivity.this)
-                        .load(firstSimilarApp.imageUrl)
-                        .error(R.drawable.ic_menu) //باید تصحیح شود
-                        .placeholder(R.drawable.image_pre_view)
-                        .into(imageView);
-
-                ((TextView) findViewById(R.id.title)).setText(firstSimilarApp.title);
-                ((TextView) findViewById(R.id.desc)).setText(firstSimilarApp.desc);
-
-
-                ImageView imageView2 = (ImageView) findViewById(R.id.thumbnail2);
-                Picasso.with(SimilarAppActivity.this)
-                        .load(secondSimilarApp.imageUrl)
-                        .error(R.drawable.ic_menu) //باید تصحیح شود
-                        .placeholder(R.drawable.image_pre_view)
-                        .into(imageView2);
-
-                ((TextView) findViewById(R.id.title2)).setText(secondSimilarApp.title);
-                ((TextView) findViewById(R.id.desc2)).setText(secondSimilarApp.desc);
+                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+                recyclerView.setAdapter(new RecyclerAdapter(SimilarAppActivity.this, similarApps));
+                recyclerView.setLayoutManager(new LinearLayoutManager(SimilarAppActivity.this));
 
             }
 
