@@ -1,8 +1,12 @@
 package com.example.atavoosi.guitarspeedtrainer;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -40,34 +45,35 @@ public class SimilarAppActivity extends BaseNavigationActivity {
         super.setContent(R.layout.activity_similar_app);
         super.onCreate(savedInstanceState);
 
+        if(isNetworkAvailable(this)) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://cdn.persiangig.com/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
+            APIService service = retrofit.create(APIService.class);
 
+            Call<SimilarAppModel> call = service.getSimilarApp();
+            call.enqueue(new Callback<SimilarAppModel>() {
+                @Override
+                public void onResponse(Call<SimilarAppModel> call, Response<SimilarAppModel> response) {
+                    List<SimilarAppModel.SimilarApp> similarApps = response.body().SimilarApp;
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://cdn.persiangig.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+                    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+                    recyclerView.setAdapter(new RecyclerAdapter(SimilarAppActivity.this, similarApps));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(SimilarAppActivity.this));
 
-        APIService service = retrofit.create(APIService.class);
+                }
 
-        Call<SimilarAppModel> call = service.getSimilarApp();
-        call.enqueue(new Callback<SimilarAppModel>() {
-            @Override
-            public void onResponse(Call<SimilarAppModel> call, Response<SimilarAppModel> response) {
-                List<SimilarAppModel.SimilarApp> similarApps = response.body().SimilarApp;
+                @Override
+                public void onFailure(Call<SimilarAppModel> call, Throwable t) {
 
-                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-                recyclerView.setAdapter(new RecyclerAdapter(SimilarAppActivity.this, similarApps));
-                recyclerView.setLayoutManager(new LinearLayoutManager(SimilarAppActivity.this));
-
-            }
-
-            @Override
-            public void onFailure(Call<SimilarAppModel> call, Throwable t) {
-
-            }
-        });
-
+                }
+            });
+        }
+        else {
+            showLocationDialog();
+        }
     }
 
     @Override
@@ -98,5 +104,32 @@ public class SimilarAppActivity extends BaseNavigationActivity {
         return true;
     }
 
+    //endregion
+
+    //region METHODS
+
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void showLocationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dialog_title));
+        builder.setMessage(getString(R.string.dialog_message));
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // positive button logic
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
     //endregion
 }

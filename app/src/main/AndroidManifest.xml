@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".fonts"
@@ -45,7 +46,8 @@
             android:name=".ContactusActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_contactus" />
-        <activity android:name=".SimilarAppActivity"
+        <activity
+            android:name=".SimilarAppActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_similarapp"></activity>
     </application>

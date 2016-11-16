@@ -38,4 +38,6 @@
     <string name="email">ایمیل:</string>
     <string name="telegram">تلگرام:</string>
     <string name="telegram_address">https://telegram.me/tavousiali</string>
+    <string name="dialog_title">خطا</string>
+    <string name="dialog_message">برای نمایش محصولات مشابه، اتصال اینترنتی خود را برقرار نمایید.</string>
 </resources>
