@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:lineSpacingExtra="5dp"
-                    android:text="نسخه رایگان برنامه Guitar Speed Trainer، امکانات بسار کمی دارد و فقط می‌توان از تمپو ۴۰ bpm شروع کرده و تا تمپو 208 bpm ادامه داد." />
+                    android:text="نسخه رایگان برنامه Guitar Speed Trainer، امکانات بسیار کمی دارد و فقط می‌توان از تمپو ۴۰ bpm شروع کرده و تا تمپو 208 bpm ادامه داد." />
 
                 <TextView
                     android:layout_width="match_parent"
