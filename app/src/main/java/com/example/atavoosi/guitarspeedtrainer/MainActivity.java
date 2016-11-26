@@ -65,6 +65,7 @@ public class MainActivity extends BaseNavigationActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.setContent(R.layout.activity_main);
+        super.onCreateBase(true);
         super.onCreate(savedInstanceState);
 
         init();
@@ -86,13 +87,13 @@ public class MainActivity extends BaseNavigationActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenuBase(menu, false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelectedBase(item, false);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

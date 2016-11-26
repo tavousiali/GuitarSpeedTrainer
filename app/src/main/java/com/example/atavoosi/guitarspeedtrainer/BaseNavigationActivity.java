@@ -33,9 +33,7 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
         setContentView(layout);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreateBase(boolean hasDrawer) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -44,6 +42,9 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (!hasDrawer)
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         try {
             String label = getResources().getString(getPackageManager().getActivityInfo(getComponentName(), 0).labelRes);
@@ -81,40 +82,19 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
                 }, 2000);
             } else {
                 super.onBackPressed();
-                return;
             }
         }
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.navigetion_icon) {
-            drawer.openDrawer(GravityCompat.END);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void onNavigationItemSelected(MenuItem item, Context context) {
         drawer.closeDrawer(GravityCompat.END);
 
         if ((context.getClass().getName().contains("MainActivity") && item.getItemId() == R.id.mainPage) ||
-                (context.getClass().getName().contains("SettingActivity") && item.getItemId() == R.id.setting))
+                (context.getClass().getName().contains("SettingActivity") && item.getItemId() == R.id.setting) ||
+                (context.getClass().getName().contains("SimilarAppActivity") && item.getItemId() == R.id.similarapp) ||
+                (context.getClass().getName().contains("ContactusActivity") && item.getItemId() == R.id.contactus) ||
+                (context.getClass().getName().contains("AboutActivity") && item.getItemId() == R.id.about))
             return;
 
         int id = item.getItemId();
@@ -150,5 +130,27 @@ public abstract class BaseNavigationActivity extends AppCompatActivity implement
                 e.printStackTrace();
             }
         }
+    }
+
+    public void onCreateOptionsMenuBase(Menu menu, boolean isBackButton) {
+        getMenuInflater().inflate(R.menu.main, menu);
+
+        if (isBackButton)
+            menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_menu_back));
+    }
+
+    public boolean onOptionsItemSelectedBase(MenuItem item, boolean isBackButton) {
+        int id = item.getItemId();
+
+        if (id == R.id.navigetion_icon) {
+            if (isBackButton) {
+                finish();
+            } else {
+                drawer.openDrawer(GravityCompat.END);
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

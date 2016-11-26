@@ -43,6 +43,7 @@ public class SimilarAppActivity extends BaseNavigationActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.setContent(R.layout.activity_similar_app);
+        super.onCreateBase(false);
         super.onCreate(savedInstanceState);
 
         if(isNetworkAvailable(this)) {
@@ -88,13 +89,13 @@ public class SimilarAppActivity extends BaseNavigationActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenuBase(menu, true);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelectedBase(item, true);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

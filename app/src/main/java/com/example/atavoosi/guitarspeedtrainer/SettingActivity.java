@@ -67,6 +67,7 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.setContent(R.layout.activity_setting);
+        super.onCreateBase(false);
         super.onCreate(savedInstanceState);
 
         init();
@@ -121,16 +122,15 @@ public class SettingActivity extends BaseNavigationActivity implements AdapterVi
             }
         }, null);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenuBase(menu, true);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelectedBase(item, true);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
